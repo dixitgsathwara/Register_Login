@@ -40,6 +40,10 @@ button{
     background-color: teal !important;
     height: 45px !important;
 }
+.btn{
+    text-decoration: none;
+    color: #fff;
+}
 img{
     width: 47%;
     height: 100%;
@@ -59,5 +63,5 @@ p{
 }
 .link{
     color: gray;
-    margin-top: 6px;
+    margin-top: 1em;
 }

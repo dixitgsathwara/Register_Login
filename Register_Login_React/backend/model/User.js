@@ -1,8 +1,6 @@
-// Import necessary modules
-const mongoose = require('mongoose');
+const mongoose =require('mongoose');
 const Schema = mongoose.Schema;
 
-// Define the user schema
 const userSchema = new Schema({
   name: {
     type: String,
@@ -25,8 +23,6 @@ const userSchema = new Schema({
     default: Date.now
   }
 });
-
-// Create and export the User model
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

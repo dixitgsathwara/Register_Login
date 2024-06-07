@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom'
 import PageTitle from './PageTitle';
+import axios from "axios"
+
 const Login = () => {
   const {register,handleSubmit,formState:{errors}}=useForm()
   const onSubmit = async (data) => {
@@ -12,20 +14,21 @@ const Login = () => {
       email: data.email,
       password: data.psw
     };
+    // const [ token, setToken ] = useState(JSON.parse(localStorage.getItem("auth")) || "");
     try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
+      const response = await axios.post('http://localhost:5000/user/login', userData, {
+        withCredentials: true // Include credentials (cookies) in the request
       });
-      if (response.ok) {
-        Swal.fire({
+      if (response.status === 200) {  
+        localStorage.setItem('auth', JSON.stringify(response.data.accesstoken)); 
+        console.log(JSON.stringify(response.data.accesstoken))   
+        
+        await Swal.fire({
           icon: 'success',
           title: 'Login Successful!',
           text: 'You have been Login successfully.'
         });
+        window.location.href = '/home';
       }
       else {
         throw new Error('Email or Password incorrect');
@@ -62,7 +65,7 @@ const Login = () => {
 
         <FormControlLabel control={<Checkbox color="success"/>} label="Remember Me" />
         <Button type='submit' variant="contained">Login</Button>
-        <p className='link'>Don't have an account ? <Link to="/register"> Register </Link></p>
+        <p className='link'>Don't have an account ? <Link to="/register"> Signup </Link></p>
         </div>
       </form>
     

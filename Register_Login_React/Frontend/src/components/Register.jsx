@@ -5,28 +5,28 @@ import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom'
 import PageTitle from './PageTitle';
+import axios from "axios"
 const Register = () => {
   const {register,handleSubmit,formState:{errors}}=useForm()
   const onSubmit = async (data) => {
+    
     const userData = {
       name: data.name,
       email: data.email,
       password: data.psw
     };
     try {
-      const response = await fetch('http://localhost:5000/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
+      const response = await axios.post('http://localhost:5000/user/', userData, {
+        withCredentials: true // Include credentials (cookies) in the request
       });
-      if (response.ok) {
-        Swal.fire({
+      if (response.status === 200) {
+        localStorage.setItem('auth', JSON.stringify(response.data.accesstoken));    
+        await Swal.fire({
           icon: 'success',
           title: 'Registration Successful!',
           text: 'You have been registered successfully.'
         });
+        window.location.href = '/home';
       }else if(response.status==400){
         Swal.fire({
           icon: 'error',
